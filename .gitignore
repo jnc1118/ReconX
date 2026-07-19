@@ -1,0 +1,20 @@
+# Virtual Environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VS Code settings
+.vscode/
+
+# Reports
+reports/*.json
+reports/*.html
+
+# Screenshots
+screenshots/*.png
+
+# OS files
+.DS_Store
+Thumbs.db
