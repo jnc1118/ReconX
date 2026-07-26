@@ -60,3 +60,30 @@ def show_whois_info(whois_info):
         table.add_row(str(key), str(value))
 
     console.print(table)
+
+def show_nmap_results(scan_results):
+    """
+    Display Nmap scan results in a Rich table.
+    """
+
+    table = Table(title="\nNmap Scan Results")
+
+    table.add_column("Port", style="cyan", no_wrap=True)
+    table.add_column("State", style="green")
+    table.add_column("Service", style="yellow")
+    table.add_column("Version", style="magenta")
+
+    if not scan_results:
+        console.print("[red]No scan results available.[/red]")
+        return
+
+    for port, info in scan_results.items():
+
+        table.add_row(
+            port,
+            info["state"],
+            info["service"],
+            info["version"]
+        )
+
+    console.print(table)
