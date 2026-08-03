@@ -1,20 +1,44 @@
+# ==========================
 # Virtual Environment
+# ==========================
 venv/
 
-# Python cache
+# ==========================
+# Python
+# ==========================
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
 
-# VS Code settings
+# ==========================
+# IDE Settings
+# ==========================
 .vscode/
+.idea/
 
+# ==========================
+# Environment Variables
+# ==========================
+.env
+
+# ==========================
 # Reports
-reports/*.json
-reports/*.html
+# ==========================
+reports/*
+!reports/.gitkeep
 
+# ==========================
 # Screenshots
+# ==========================
 screenshots/*.png
 
-# OS files
+# ==========================
+# Logs
+# ==========================
+logs/
+
+# ==========================
+# Operating System Files
+# ==========================
 .DS_Store
 Thumbs.db
