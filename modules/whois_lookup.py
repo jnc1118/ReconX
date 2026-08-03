@@ -1,5 +1,6 @@
 import whois
-
+import io
+import contextlib
 
 def get_whois_info(domain):
     """
@@ -10,7 +11,8 @@ def get_whois_info(domain):
     """
 
     try:
-        w = whois.whois(domain)
+        with contextlib.redirect_stderr(io.StringIO()):
+            w = whois.whois(domain)
 
         return {
             "Registrar": w.registrar,

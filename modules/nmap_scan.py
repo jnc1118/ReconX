@@ -1,4 +1,5 @@
 import subprocess
+import re
 
 
 def run_nmap_scan(target):
@@ -8,7 +9,7 @@ def run_nmap_scan(target):
 
     try:
         result = subprocess.run(
-            ["nmap", "-sV", target],
+            ["nmap", "-T4", "-F","--max-retries", "3", "-sV", target],
             capture_output=True,
             text=True,
             check=True
@@ -39,18 +40,23 @@ def run_nmap_scan(target):
 
             parts = line.split()
 
-            if len(parts) >= 3:
+            # Skip lines that are not actual port entries
+            if len(parts) < 3:
+                continue
 
-                port = parts[0]
-                state = parts[1]
-                service = parts[2]
-                version = " ".join(parts[3:]) if len(parts) > 3 else ""
+            if not re.match(r"^\d+/(tcp|udp)$", parts[0]):
+                continue
 
-                scan_results[port] = {
-                    "state": state,
-                    "service": service,
-                    "version": version
-                }
+            port = parts[0]
+            state = parts[1]
+            service = parts[2]
+            version = " ".join(parts[3:]) if len(parts) > 3 else ""
+
+            scan_results[port] = {
+                "state": state,
+                "service": service,
+                "version": version
+            }
 
         return scan_results
 

@@ -3,13 +3,14 @@ from core.validator import validate_target
 from modules.dns_lookup import get_dns_records
 from modules.whois_lookup import get_whois_info
 from modules.nmap_scan import run_nmap_scan
-from core.report import (show_target_info, show_dns_records, show_whois_info, show_nmap_results)
-
+from rich.console import Console
+from core.report import (show_target_info, show_dns_records, show_whois_info, show_nmap_results,save_report,show_scan_summary)
+import time
 
 
 def main():
     show_banner()
-
+    start_time = time.time()
     target_input = input("\nEnter target: ")
 
     try:
@@ -30,8 +31,20 @@ def main():
         whois_info = get_whois_info(target.hostname)
         show_whois_info(whois_info)
 
-        scan_results = run_nmap_scan(target.hostname)
+        console = Console()
+        with console.status(
+            "[bold green]Running Nmap Service Detection..."
+        ):
+            scan_results = run_nmap_scan(target.hostname)
+        console.print("\n[green]✓ Nmap scan completed![/green]")
         show_nmap_results(scan_results)
+
+        report_path = save_report(target,dns_records,whois_info,scan_results)
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        show_scan_summary(elapsed_time)
+        print(f"\nReport saved successfully!")
+        print(f"Location: {report_path}")
 
     except ValueError as e:
         print(f"\nError: {e}")
