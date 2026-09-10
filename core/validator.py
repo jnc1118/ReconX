@@ -21,32 +21,23 @@ def validate_target(user_input: str):
         hostname = user_input
         scheme = "https"
 
-    # Check whether input is an IP address
     try:
         ipaddress.ip_address(hostname)
         ip = hostname
+        is_ip = True
 
-        # Reverse DNS: IP → Domain
-        try:
-            reverse_hostname = socket.gethostbyaddr(ip)[0]
-            hostname = reverse_hostname.rstrip(".")
-        except (socket.herror, socket.gaierror):
-            hostname = None
-
-    # Input is a domain
     except ValueError:
-
         try:
             ip = socket.gethostbyname(hostname)
-
         except socket.gaierror:
-            raise ValueError(
-                f"Unable to resolve '{hostname}'."
-            )
+            raise ValueError(f"Unable to resolve '{hostname}'.")
+
+        is_ip = False
 
     return Target(
         original_input=user_input,
         hostname=hostname,
         ip=ip,
-        scheme=scheme
+        scheme=scheme,
+        is_ip=is_ip
     )

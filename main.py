@@ -52,10 +52,13 @@ def main():
         show_vulnerability_results(vulnerabilities)
     
         ip_reputation = check_ip_reputation(target.ip)
-        domain_reputation = check_domain_reputation(target.hostname)
-
+        domain_reputation = None
+        if not target.is_ip:
+            domain_reputation = check_domain_reputation(target.hostname)
+            
         show_reputation_results(ip_reputation)
-        show_domain_reputation_results(domain_reputation)
+        if not target.is_ip:
+            show_domain_reputation_results(domain_reputation)
 
         report_path = save_report(target,dns_records,whois_info,scan_results,vulnerabilities,ip_reputation,domain_reputation)
         end_time = time.time()

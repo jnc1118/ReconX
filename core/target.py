@@ -7,3 +7,4 @@ class Target:
     hostname: str
     ip: str
     scheme: str
+    is_ip: bool

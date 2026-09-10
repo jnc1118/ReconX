@@ -202,8 +202,13 @@ def save_report(target, dns_records, whois_info, nmap_results, vulnerabilities,i
         report.write("DOMAIN REPUTATION\n")
         report.write("=" * 60 + "\n")
 
-        for key, value in domain_reputation.items():
-            report.write(f"{key}: {value}\n")
+        if domain_reputation:
+            for key, value in domain_reputation.items():
+                if isinstance(value, list):
+                    value = ", ".join(str(v) for v in value)
+                report.write(f"{key}: {value}\n")
+        else:
+            report.write("Domain reputation check skipped (IP target).\n")
 
         report.write("\n")
         report.write("=" * 60 + "\n")
